@@ -12,7 +12,8 @@ The goal is practical developer onboarding: point RAGLite at an existing project
 - Support local inference through Ollama first.
 - Keep llama.cpp and vLLM as pluggable generation backends.
 - Support deterministic chunking and optional LLM-assisted chunking.
-- Use `uv` for installation, dependency management, and running commands.
+- Use `uv` for Python dependency management.
+- Use Taskfile for install, setup, indexing, and query workflows.
 
 ## MVP Stack
 
@@ -24,21 +25,24 @@ The goal is practical developer onboarding: point RAGLite at an existing project
 - Embeddings: Ollama embedding model, default `nomic-embed-text`
 - Generation: Ollama chat model, default configurable
 - Optional chunk planner: DeepSeek-compatible OpenAI API endpoint
+- Workflow runner: Taskfile
 
 ## User Workflow
 
 ```bash
-uv sync
-uv run raglite init
-uv run raglite index ./docs
-uv run raglite ask "How does authentication work?"
+task setup
+task init
+task index
+task ask QUESTION="How does authentication work?"
 ```
+
+If your system exposes Taskfile as `go-task`, replace `task` with `go-task`.
 
 With LLM-assisted chunking through DeepSeek:
 
 ```bash
 export DEEPSEEK_API_KEY="..."
-uv run raglite index ./docs --chunker llm --chunk-llm deepseek
+task index:deepseek
 ```
 
 ## Documentation
@@ -47,6 +51,7 @@ Start here:
 
 - `docs/product-spec.md` — what the project is and what the MVP must do.
 - `docs/architecture.md` — system components and data flow.
+- `docs/taskfile.md` — Taskfile workflow commands.
 - `docs/uv-usage.md` — installation and running with `uv`.
 - `docs/chunking.md` — deterministic and LLM-assisted chunking design.
 - `docs/sqlite-vector.md` — proposed SQLite schema and vector-search usage.

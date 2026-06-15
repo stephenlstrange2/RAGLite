@@ -44,7 +44,7 @@ DeepSeek should be the first external LLM chunk planner because it is cost-effec
 Example command:
 
 ```bash
-uv run raglite index ./docs --chunker llm --chunk-llm deepseek
+task index:deepseek
 ```
 
 Required environment variable:

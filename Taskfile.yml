@@ -1,0 +1,82 @@
+version: "3"
+
+vars:
+  DOCS_DIR: '{{.DOCS_DIR | default "./docs"}}'
+  QUESTION: '{{.QUESTION | default "What is this project?"}}'
+  OLLAMA_EMBED_MODEL: '{{.OLLAMA_EMBED_MODEL | default "nomic-embed-text"}}'
+  OLLAMA_CHAT_MODEL: '{{.OLLAMA_CHAT_MODEL | default "llama3.1:8b"}}'
+
+env:
+  OLLAMA_BASE_URL: '{{.OLLAMA_BASE_URL | default "http://localhost:11434"}}'
+  RAGLITE_EMBEDDING_PROVIDER: '{{.RAGLITE_EMBEDDING_PROVIDER | default "ollama"}}'
+  RAGLITE_EMBEDDING_MODEL: "{{.OLLAMA_EMBED_MODEL}}"
+  RAGLITE_GENERATION_PROVIDER: '{{.RAGLITE_GENERATION_PROVIDER | default "ollama"}}'
+  RAGLITE_GENERATION_MODEL: "{{.OLLAMA_CHAT_MODEL}}"
+
+tasks:
+  default:
+    desc: List available tasks
+    cmds:
+      - "{{.TASK_EXE}} --list"
+
+  doctor:
+    desc: Check required local tools
+    cmds:
+      - uv --version
+      - "{{.TASK_EXE}} --version"
+      - ollama --version
+
+  install:
+    desc: Install Python dependencies with uv
+    cmds:
+      - uv sync
+
+  install:dev:
+    desc: Install Python dependencies with development extras
+    cmds:
+      - uv sync --extra dev
+
+  setup:
+    desc: Install dependencies and pull default Ollama models
+    cmds:
+      - task: install
+      - task: ollama:pull
+
+  ollama:pull:
+    desc: Pull default Ollama embedding and chat models
+    cmds:
+      - ollama pull {{.OLLAMA_EMBED_MODEL}}
+      - ollama pull {{.OLLAMA_CHAT_MODEL}}
+
+  init:
+    desc: Initialize the local RAGLite database
+    cmds:
+      - uv run raglite init
+
+  index:
+    desc: Index documentation with deterministic local chunking
+    cmds:
+      - uv run raglite index {{.DOCS_DIR}} {{.CLI_ARGS}}
+
+  index:deepseek:
+    desc: Index documentation using DeepSeek-assisted chunk planning
+    preconditions:
+      - sh: test -n "$DEEPSEEK_API_KEY"
+        msg: Set DEEPSEEK_API_KEY before running task index:deepseek.
+    cmds:
+      - uv run raglite index {{.DOCS_DIR}} --chunker llm --chunk-llm deepseek {{.CLI_ARGS}}
+
+  ask:
+    desc: Ask a question against the indexed documentation
+    cmds:
+      - uv run raglite ask "{{.QUESTION}}" {{.CLI_ARGS}}
+
+  lint:
+    desc: Run Ruff checks
+    cmds:
+      - uv run ruff check .
+
+  test:
+    desc: Run tests
+    cmds:
+      - uv run pytest

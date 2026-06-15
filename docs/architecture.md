@@ -107,3 +107,5 @@ Configuration should be accepted from:
 3. optional config file.
 
 Command-line flags take precedence over environment variables. Environment variables take precedence over config file values.
+
+Taskfile should be the recommended user-facing command layer. It should pass configuration through environment variables and CLI flags rather than introducing a separate configuration system.

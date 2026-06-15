@@ -1,6 +1,6 @@
 # UV Usage
 
-RAGLite should be installed and run with `uv`.
+RAGLite should use `uv` for Python dependency management. Day-to-day commands should be run through Taskfile so setup, model pulls, indexing, and questions are consistent.
 
 ## Install UV
 
@@ -12,7 +12,19 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 Restart the shell if `uv` is not immediately available.
 
-## Project Setup
+## Project Setup Through Taskfile
+
+Preferred setup:
+
+```bash
+task setup
+```
+
+If your installation exposes Taskfile as `go-task`, run `go-task setup` instead.
+
+This runs `uv sync` and pulls the default Ollama models.
+
+## Direct UV Setup
 
 From the repository root:
 
@@ -22,9 +34,19 @@ uv sync
 
 This creates the virtual environment and installs project dependencies from `pyproject.toml` and `uv.lock` when present.
 
-## Run Commands
+## Run Commands Through Taskfile
 
-RAGLite commands should be run through `uv run`:
+Preferred commands:
+
+```bash
+task init
+task index
+task ask QUESTION="How is indexing implemented?"
+```
+
+## Direct UV Commands
+
+Direct `uv run` commands are still valid when debugging:
 
 ```bash
 uv run raglite --help
@@ -64,6 +86,12 @@ DeepSeek is optional and should only be used when explicitly requested:
 ```bash
 export DEEPSEEK_API_KEY="..."
 uv run raglite index ./docs --chunker llm --chunk-llm deepseek
+```
+
+Preferred Taskfile equivalent:
+
+```bash
+task index:deepseek
 ```
 
 The implementation should treat DeepSeek as an OpenAI-compatible chat endpoint where possible, isolated behind the same `ChunkPlanner` interface used by any future external chunking provider.

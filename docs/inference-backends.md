@@ -64,7 +64,7 @@ DeepSeek is supported first as an optional external chunk planner:
 
 ```bash
 export DEEPSEEK_API_KEY="..."
-uv run raglite index ./docs --chunker llm --chunk-llm deepseek
+task index:deepseek
 ```
 
 The chunk planner must only return boundaries and metadata. It must not replace source text.

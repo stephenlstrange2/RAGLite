@@ -26,6 +26,7 @@ The MVP must support:
 7. Searching with both SQLite FTS5 and `sqlite-vector`.
 8. Producing answers with citations to source paths and line ranges.
 9. Installing and running through `uv`.
+10. Providing Taskfile tasks for setup, model pulls, indexing, and asking questions.
 
 ## Non-Goals for MVP
 
@@ -39,9 +40,9 @@ The MVP must support:
 ## Primary Commands
 
 ```bash
-uv run raglite init
-uv run raglite index ./docs
-uv run raglite ask "Where is the database schema documented?"
+task init
+task index
+task ask QUESTION="Where is the database schema documented?"
 ```
 
 ## Success Criteria
