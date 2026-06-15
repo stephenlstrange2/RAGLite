@@ -31,8 +31,7 @@ The goal is practical developer onboarding: point RAGLite at an existing project
 
 ```bash
 task setup
-task init
-task index
+task smoke
 task ask QUESTION="How does authentication work?"
 ```
 

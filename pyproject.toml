@@ -18,12 +18,12 @@ dev = [
   "ruff>=0.5.0",
 ]
 
+[project.scripts]
+raglite = "raglite.cli:app"
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
-
-[tool.uv]
-package = false
 
 [tool.ruff]
 line-length = 100

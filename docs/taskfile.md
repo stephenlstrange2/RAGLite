@@ -24,6 +24,16 @@ If your system exposes the binary as `go-task`, use:
 go-task doctor
 ```
 
+## Smoke Test
+
+After `task install`, run the local workflow smoke test:
+
+```bash
+task smoke
+```
+
+This verifies that the CLI is available, initializes the database, indexes `./docs`, and runs a retrieval-only question.
+
 ## Setup
 
 Install Python dependencies and pull the default Ollama models:

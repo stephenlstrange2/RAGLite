@@ -44,6 +44,12 @@ task index
 task ask QUESTION="How is indexing implemented?"
 ```
 
+Run the basic workflow test:
+
+```bash
+task smoke
+```
+
 ## Direct UV Commands
 
 Direct `uv run` commands are still valid when debugging:

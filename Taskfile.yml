@@ -26,6 +26,11 @@ tasks:
       - "{{.TASK_EXE}} --version"
       - ollama --version
 
+  help:
+    desc: Show RAGLite CLI help
+    cmds:
+      - uv run raglite --help
+
   install:
     desc: Install Python dependencies with uv
     cmds:
@@ -70,6 +75,16 @@ tasks:
     desc: Ask a question against the indexed documentation
     cmds:
       - uv run raglite ask "{{.QUESTION}}" {{.CLI_ARGS}}
+
+  smoke:
+    desc: Run a basic local workflow test
+    cmds:
+      - task: help
+      - task: init
+      - task: index
+      - task: ask
+        vars:
+          QUESTION: "What is RAGLite?"
 
   lint:
     desc: Run Ruff checks
