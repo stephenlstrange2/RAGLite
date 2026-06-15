@@ -58,13 +58,18 @@ tasks:
     desc: Check that default Ollama models are pulled locally
     cmds:
       - |
-        ollama list | grep -q "^{{.OLLAMA_EMBED_MODEL}}" || {
+        ollama list > /tmp/raglite-ollama-list.txt || {
+          echo "Ollama is installed but not reachable at ${OLLAMA_BASE_URL}."
+          echo "Start Ollama, then rerun: {{.TASK_EXE}} doctor"
+          exit 1
+        }
+        grep -q "^{{.OLLAMA_EMBED_MODEL}}" /tmp/raglite-ollama-list.txt || {
           echo "Missing Ollama embedding model: {{.OLLAMA_EMBED_MODEL}}"
           echo "Install it with: {{.TASK_EXE}} ollama:pull"
           exit 1
         }
       - |
-        ollama list | grep -q "^{{.OLLAMA_CHAT_MODEL}}" || {
+        grep -q "^{{.OLLAMA_CHAT_MODEL}}" /tmp/raglite-ollama-list.txt || {
           echo "Missing Ollama chat model: {{.OLLAMA_CHAT_MODEL}}"
           echo "Install it with: {{.TASK_EXE}} ollama:pull"
           exit 1
