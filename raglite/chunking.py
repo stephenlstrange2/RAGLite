@@ -50,6 +50,34 @@ def chunk_markdown(text: str, *, target_lines: int = 45, overlap_lines: int = 5)
     return [Chunk(ordinal=0, heading=None, text=stripped, start_line=1, end_line=len(lines))]
 
 
+def chunks_from_boundaries(
+    text: str,
+    boundaries: list[tuple[str | None, int, int]],
+) -> list[Chunk]:
+    lines = text.splitlines()
+    chunks: list[Chunk] = []
+
+    for title, start_line, end_line in boundaries:
+        if start_line < 1 or end_line < start_line or end_line > len(lines):
+            raise ValueError(f"Invalid chunk boundary: {start_line}-{end_line}")
+        chunk_text = "\n".join(lines[start_line - 1 : end_line]).strip()
+        if not chunk_text:
+            continue
+        chunks.append(
+            Chunk(
+                ordinal=len(chunks),
+                heading=title,
+                text=chunk_text,
+                start_line=start_line,
+                end_line=end_line,
+            )
+        )
+
+    if not chunks:
+        raise ValueError("LLM chunk planner returned no usable chunks")
+    return chunks
+
+
 def _split_heading_sections(lines: list[str]) -> list[tuple[str | None, int, int]]:
     sections: list[tuple[str | None, int, int]] = []
     current_heading: str | None = None

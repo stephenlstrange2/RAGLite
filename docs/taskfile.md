@@ -18,6 +18,8 @@ Check the local environment:
 task doctor
 ```
 
+`task doctor` checks required tools and verifies that the default Ollama embedding and chat models are pulled locally.
+
 If your system exposes the binary as `go-task`, use:
 
 ```bash
@@ -48,6 +50,12 @@ Equivalent lower-level commands:
 uv sync
 ollama pull nomic-embed-text
 ollama pull llama3.1:8b
+```
+
+Check only the default Ollama models:
+
+```bash
+task models:check
 ```
 
 ## Indexing
@@ -91,6 +99,12 @@ Ask against the indexed documentation:
 
 ```bash
 task ask QUESTION="How does configuration loading work?"
+```
+
+Ask without generation and show retrieved chunks only:
+
+```bash
+task ask:retrieval QUESTION="How does configuration loading work?"
 ```
 
 ## Model Configuration

@@ -25,6 +25,7 @@ tasks:
       - uv --version
       - "{{.TASK_EXE}} --version"
       - ollama --version
+      - task: models:check
 
   help:
     desc: Show RAGLite CLI help
@@ -53,6 +54,22 @@ tasks:
       - ollama pull {{.OLLAMA_EMBED_MODEL}}
       - ollama pull {{.OLLAMA_CHAT_MODEL}}
 
+  models:check:
+    desc: Check that default Ollama models are pulled locally
+    cmds:
+      - |
+        ollama list | grep -q "^{{.OLLAMA_EMBED_MODEL}}" || {
+          echo "Missing Ollama embedding model: {{.OLLAMA_EMBED_MODEL}}"
+          echo "Install it with: {{.TASK_EXE}} ollama:pull"
+          exit 1
+        }
+      - |
+        ollama list | grep -q "^{{.OLLAMA_CHAT_MODEL}}" || {
+          echo "Missing Ollama chat model: {{.OLLAMA_CHAT_MODEL}}"
+          echo "Install it with: {{.TASK_EXE}} ollama:pull"
+          exit 1
+        }
+
   init:
     desc: Initialize the local RAGLite database
     cmds:
@@ -75,6 +92,11 @@ tasks:
     desc: Ask a question against the indexed documentation
     cmds:
       - uv run raglite ask "{{.QUESTION}}" {{.CLI_ARGS}}
+
+  ask:retrieval:
+    desc: Ask a question and show retrieved chunks only
+    cmds:
+      - uv run raglite ask "{{.QUESTION}}" --no-generate {{.CLI_ARGS}}
 
   smoke:
     desc: Run a basic local workflow test

@@ -58,6 +58,7 @@ def upsert_document(
     modified_at: str | None,
     chunks: list[Chunk],
     *,
+    chunker: str = "deterministic",
     db_path: Path = DEFAULT_DB_PATH,
 ) -> int:
     init_db(db_path)
@@ -112,7 +113,7 @@ def upsert_document(
                     chunk.start_line,
                     chunk.end_line,
                     chunk_hash,
-                    "deterministic",
+                    chunker,
                 ),
             )
             chunk_id = int(cursor.lastrowid)

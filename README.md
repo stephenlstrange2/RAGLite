@@ -50,6 +50,7 @@ Start here:
 
 - `docs/product-spec.md` — what the project is and what the MVP must do.
 - `docs/architecture.md` — system components and data flow.
+- `docs/diagram.md` — Mermaid overview of indexing and question answering.
 - `docs/taskfile.md` — Taskfile workflow commands.
 - `docs/uv-usage.md` — installation and running with `uv`.
 - `docs/chunking.md` — deterministic and LLM-assisted chunking design.
