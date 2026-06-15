@@ -33,6 +33,7 @@ The goal is practical developer onboarding: point RAGLite at an existing project
 task setup
 task smoke
 task ask QUESTION="How does authentication work?"
+task time:compare QUESTION="How does authentication work?"
 ```
 
 If your system exposes Taskfile as `go-task`, replace `task` with `go-task`.

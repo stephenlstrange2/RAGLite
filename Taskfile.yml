@@ -103,6 +103,22 @@ tasks:
     cmds:
       - uv run raglite ask "{{.QUESTION}}" --no-generate {{.CLI_ARGS}}
 
+  time:ask:
+    desc: Measure generated ask latency
+    cmds:
+      - /usr/bin/time -f "elapsed=%E user=%U system=%S max_rss_kb=%M" uv run raglite ask "{{.QUESTION}}" {{.CLI_ARGS}}
+
+  time:ask:retrieval:
+    desc: Measure retrieval-only ask latency
+    cmds:
+      - /usr/bin/time -f "elapsed=%E user=%U system=%S max_rss_kb=%M" uv run raglite ask "{{.QUESTION}}" --no-generate {{.CLI_ARGS}}
+
+  time:compare:
+    desc: Compare generated ask vs retrieval-only latency
+    cmds:
+      - task: time:ask:retrieval
+      - task: time:ask
+
   smoke:
     desc: Run a basic local workflow test
     cmds:

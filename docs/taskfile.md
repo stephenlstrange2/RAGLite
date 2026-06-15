@@ -107,6 +107,28 @@ Ask without generation and show retrieved chunks only:
 task ask:retrieval QUESTION="How does configuration loading work?"
 ```
 
+## Timing
+
+Measure generated answer latency:
+
+```bash
+task time:ask QUESTION="How does chunking work?"
+```
+
+Measure retrieval-only latency:
+
+```bash
+task time:ask:retrieval QUESTION="How does chunking work?"
+```
+
+Compare both paths with the same question:
+
+```bash
+task time:compare QUESTION="How does chunking work?"
+```
+
+The timing output reports elapsed wall time, user CPU time, system CPU time, and maximum resident memory in kilobytes.
+
 ## Model Configuration
 
 Override default Ollama models:
